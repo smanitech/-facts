@@ -1,0 +1,146 @@
+// This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK (v2).
+// Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
+// session persistence, api calls, and more.
+const Alexa = require('ask-sdk-core');
+const data = [
+                    ' राजगीर में कई धार्मिक स्थल हैं जो बौद्ध धर्म या जैन धर्म को समर्पित हैं. ',
+    		        'नालंदा से सिर्फ 15 किलोमीटर दूर राजगीर मंदिरों और मठों का परिसर है.',
+                    'यह भारत के सबसे महत्वपूर्ण पर्यटन स्थलों में से एक है. ',
+                    'एक घाटी में स्थित होने के कारण, राजगीर एक बहुत ही दर्शनीय स्थान है. ', 
+                    'छोटा पहाड़ी ग्रिट टाउन हरे भरे जंगल से आच्छादित है जो जगह की सुंदरता को बढ़ाता है. ',
+                    ' यह जगह भगवान बुद्ध और बौद्ध धर्म से जुड़ी हुई है. ',
+                    'राजगीर का अतिरिक्त आकर्षण रोपवे है, जो आपको जापानी द्वारा निर्मित शांति स्तूप और मठों तक ले जाता है. ' ,
+                    'गर्म पानी के तालाब, इन तालाबों में कुछ औषधीय गुण पाए जाते हैं, त्वचा के कई रोगों के इलाज में मदद करता है. ',
+                    'हिंदू और जैन मंदिर जो हिंदुओं और जैनियों को भी आकर्षित करते हैं. ', 
+                    'राजगीर वह शहर है, जहां की खूबसूरत वादियों को घेरने वाली हवा, बौद्ध धर्म और जैन धर्म के साथ जुड़ाव के साथ आध्यात्मिकता और इतिहास के जीवंत संकेत देती है. ',
+                    'राजगीर में कई धार्मिक स्थल हैं जो बौद्ध धर्म या जैन धर्म को समर्पित हैं. ',
+                    'एक हरी घाटी में स्थित और चट्टानी पहाड़ियों से घिरा, राजगीर घने जंगलों, रहस्यमयी गुफाओं और झरनों के बीच प्राकृतिक शांति के साथ एक आध्यात्मिक शहर है. ',
+                    'भगवान बुद्ध और भगवान महावीर दोनों ने इसे आध्यात्मिक और धार्मिक महत्व देते हुए समय बिताने के लिए कहा है.',
+                    'कोई भी यहां विभिन्न खंडहरों, मंदिरों और स्थलों की यात्रा कर सकता है ,और अपनी ताजगी भरी शांति में कुछ समय बिता सकता है. ',
+                    'यह भारत के बिहार राज्य में राजधानी पटना से लगभग 60 किलोमीटर दक्षिण-पूर्व में स्थित है. ',
+                    'राजगीर रॉक-कट गुफाओं, किलों, बौद्ध खंडहरों, शैल शिलालेखों, हिंदू और जैन मंदिरों और मुस्लिम मकबरों के लिए प्रसिद्ध है.',
+                    'यह स्थान रेलवे और सड़कों के माध्यम से बिहार और पूर्वी भारत के अन्य हिस्सों से अच्छी तरह से जुड़ा हुआ है. ',
+
+];
+
+const GET_FACT_MESSAGE = "यह रहा आपका fact : ";
+
+const LaunchRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
+    },
+    handle(handlerInput) {
+        const speechText = 'नमस्ते, राजगीर facts मे आपका स्वागत है, आप मुझे  राजगीर के फैक्ट पूछ सकते है  ';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+const GetNewFactIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'GetNewFactIntent';
+    },
+    handle(handlerInput) {
+        const factArr = data;
+        const factIndex = Math.floor(Math.random() * factArr.length);
+        const randomFact = factArr[factIndex];
+        const speechOutput = GET_FACT_MESSAGE + randomFact;
+
+
+        const speechText = speechOutput;
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
+    }
+};
+const HelpIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+    },
+    handle(handlerInput) {
+        const speechText = ' आप मुझे नया fact सुनाओ बोल सकते हैं या फिर exit भी बोल सकते हैं... आप क्या करना चाहेंगे? ' ;
+        const reprompt = 'मैं आपकी किस प्रकार से सहायता कर सकती हूँ? ';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+const CancelAndStopIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
+                || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
+    },
+    handle(handlerInput) {
+        const speechText = 'धन्यवाद, फिर मिलते हैं';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .getResponse();
+    }
+};
+const SessionEndedRequestHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+    },
+    handle(handlerInput) {
+        // Any cleanup logic goes here.
+        return handlerInput.responseBuilder.getResponse();
+    }
+};
+
+// The intent reflector is used for interaction model testing and debugging.
+// It will simply repeat the intent the user said. You can create custom handlers
+// for your intents by defining them above, then also adding them to the request
+// handler chain below.
+const IntentReflectorHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest';
+    },
+    handle(handlerInput) {
+        const intentName = handlerInput.requestEnvelope.request.intent.name;
+        const speechText = `You just triggered ${intentName}`;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
+    }
+};
+
+// Generic error handling to capture any syntax or routing errors. If you receive an error
+// stating the request handler chain is not found, you have not implemented a handler for
+// the intent being invoked or included it in the skill builder below.
+const ErrorHandler = {
+    canHandle() {
+        return true;
+    },
+    handle(handlerInput, error) {
+        console.log(`~~~~ Error handled: ${error.message}`);
+        const speechText = ` सॉरी, मैं वो समज नहीं पायी. क्या आप repeat कर सकते हैं? `;
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
+
+// This handler acts as the entry point for your skill, routing all request and response
+// payloads to the handlers above. Make sure any new handlers or interceptors you've
+// defined are included below. The order matters - they're processed top to bottom.
+exports.handler = Alexa.SkillBuilders.custom()
+    .addRequestHandlers(
+        LaunchRequestHandler,
+        GetNewFactIntentHandler,
+        HelpIntentHandler,
+        CancelAndStopIntentHandler,
+        SessionEndedRequestHandler,
+        IntentReflectorHandler) // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
+    .addErrorHandlers(
+        ErrorHandler)
+    .lambda();
