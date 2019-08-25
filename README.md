@@ -1,2 +1,2 @@
 # Hindi-facts
-Alexa hindi fact
+Alexa hindi facts skill 
