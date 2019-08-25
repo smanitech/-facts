@@ -1,0 +1,44 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "राजगीर facts",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "GetNewFactIntent",
+                    "slots": [],
+                    "samples": [
+                        "राजगीर fact",
+                        "राजगीर facts",
+                        "मुझे एक fact बताओ ",
+                        "राजगीर के गाने",
+                        "राजगीर कुंड",
+                        "राजगीर का वीडियो",
+                        "राजगीर का फोटो",
+                        "राजगीर मेला",
+                        "राजगीर कुंद",
+                        "राजगीर फिल्म",
+                        "राजगीर रेलवे स्टेशन",
+                        "राजगीर बिहार"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}
